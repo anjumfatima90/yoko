@@ -25,10 +25,6 @@ sourceSets.main.java {
   srcDirs 'src/main/generated-sources/idl'
 }
 
-jar {
-  exclude '**/*.class'
-}
-
 javadoc {
   // Generated IDL sources contain HTML that is not HTML5 compliant
   // Disable strict HTML checking for these auto-generated files
