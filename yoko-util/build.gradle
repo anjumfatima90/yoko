@@ -24,6 +24,3 @@ dependencies {
   testImplementation project(":testify")
 }
 
-jar {
-  exclude '**/*.class'
-}

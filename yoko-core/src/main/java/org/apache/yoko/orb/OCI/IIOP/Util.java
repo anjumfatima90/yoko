@@ -175,8 +175,10 @@ final public class Util {
             // add this profile to the list unless
             // A) the caller requested matching
             // B) the profile doesn't match the supplied host and port
+            // The profile host may be encoded (e.g. by the iiops corbaloc protocol), so decode it
+            // before comparing it with the (already decoded) connector host.
             if (!!!performMatch
-                    || hostAndPortMatch(host, portNo, body.host, body.port, matchLoopback)
+                    || hostAndPortMatch(host, portNo, isEncodedHost(body.host) ? decodeHost(body.host) : body.host, body.port, matchLoopback)
                     || taggedComponentsMatch(components, host, portNo, codec, matchLoopback)) {
                 ProfileInfo profileInfo = new ProfileInfo();
                 profileInfo.key = body.object_key;
