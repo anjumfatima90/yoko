@@ -21,6 +21,3 @@ dependencies {
   implementation files(project(":yoko-spec-corba").sourceSets.main.output)
 }
 
-jar {
-  exclude '**/*.class'
-}

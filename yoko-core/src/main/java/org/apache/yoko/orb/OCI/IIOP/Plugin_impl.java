@@ -34,6 +34,7 @@ import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.IOP.TAG_INTERNET_IOP;
 
+import static org.apache.yoko.logging.VerboseLogging.IOR_LOG;
 import static org.apache.yoko.util.Assert.ensure;
 import static org.apache.yoko.util.Exceptions.as;
 
@@ -72,13 +73,17 @@ public final class Plugin_impl extends LocalObject implements Plugin {
             throw as(INITIALIZE::new, ex, "OCI IIOP plug-in already installed");
         }
 
-        // Install the "iiop" corbaloc URL protocol
+        // Install the "iiop" (and optionally "iiops") corbaloc URL protocols
         try {
             URLRegistry registry = (URLRegistry)orb_.resolve_initial_references("URLRegistry");
             URLScheme scheme = registry.findScheme("corbaloc");
             ensure(scheme != null);
             CorbalocURLScheme corbaloc = (CorbalocURLScheme) scheme;
             corbaloc.addProtocol(new CorbalocProtocol_impl());
+            String sslConfigName = connectionHelper.getDefaultSslConfigName();
+            IOR_LOG.info("iiop plugin: registering iiops corbaloc protocol with SSL config name: "
+                    + (sslConfigName != null ? sslConfigName : "(default)"));
+            corbaloc.addProtocol(new IIOPSCorbalocProtocol_impl(sslConfigName));
         } catch (InvalidName | ProtocolAlreadyExists ex) {
             throw Assert.fail(ex);
         }

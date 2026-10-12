@@ -17,8 +17,6 @@
  */
 dependencies {
   // depend on the Yoko spec classes
-  implementation project(':yoko-osgi')
-  implementation files(project(':yoko-osgi').sourceSets.main.output)
   implementation project(':yoko-spec-corba')
   implementation files(project(':yoko-spec-corba').sourceSets.main.output)
   implementation project(':yoko-rmi-spec')
